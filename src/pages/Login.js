@@ -3,13 +3,19 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 // lalaland
-import { loginUser } from '../redux/Action';
+import { fetchTokenThunk, loginUser } from '../redux/Action';
+import { fetchToken } from '../services/api';
 
 class Login extends Component {
   state = {
     name: '',
     email: '',
     isVisible: true,
+  }
+
+  componentDidMount() {
+    const { token } = this.props;
+    console.log('componentDidMount(): ', token);
   }
 
   componentDidUpdate() {
@@ -38,10 +44,13 @@ class Login extends Component {
     this.setState({ isVisible: value });
   }
 
-  handleClick = () => {
-    const { dispatch } = this.props;
-
+  handleClick = async () => {
+    const { dispatch, history: { push } } = this.props;
     dispatch(loginUser(this.state));
+    const response = await fetchToken();
+    localStorage.setItem('token', response.token);
+    dispatch(fetchTokenThunk(response.token));
+    push('/game');
   }
 
   handleChange = ({ target }) => {
@@ -53,7 +62,6 @@ class Login extends Component {
 
   render() {
     const { name, email, isVisible } = this.state;
-
     return (
       <div>
         <form>
@@ -97,9 +105,22 @@ class Login extends Component {
     );
   }
 }
+const mapStateToProps = (state) => ({
+  user: state.user,
+  token: state.token.token,
+});
 
-export default connect()(Login);
+export default connect(mapStateToProps)(Login);
+
+Login.defaultProps = {
+  history: {},
+  token: '',
+};
 
 Login.propTypes = {
   dispatch: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }),
+  token: PropTypes.string,
 };
