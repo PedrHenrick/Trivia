@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 // lalaland
 import { loginUser } from '../redux/Action';
 
@@ -87,6 +88,9 @@ class Login extends Component {
             onClick={ this.handleClick }
           >
             Play
+          </button>
+          <button type="button" data-testid="btn-settings">
+            <Link to="/settings">Settings</Link>
           </button>
         </form>
       </div>
