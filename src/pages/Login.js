@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 // lalaland
 import { fetchTokenThunk, loginUser } from '../redux/Action';
 import { fetchToken } from '../services/api';
@@ -95,6 +96,9 @@ class Login extends Component {
             onClick={ this.handleClick }
           >
             Play
+          </button>
+          <button type="button" data-testid="btn-settings">
+            <Link to="/settings">Settings</Link>
           </button>
         </form>
       </div>
