@@ -4,18 +4,14 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 // lalaland
 import { fetchTokenThunk, loginUser } from '../redux/Action';
-import { fetchToken } from '../services/api';
+import { fetchToken, fetchQuestions } from '../services/api';
 
 class Login extends Component {
   state = {
     name: '',
     email: '',
     isVisible: true,
-  }
-
-  componentDidMount() {
-    const { token } = this.props;
-    console.log('componentDidMount(): ', token);
+    loaded: false,
   }
 
   componentDidUpdate() {
@@ -35,7 +31,7 @@ class Login extends Component {
     if (validateArray.every((item) => item === true) && isVisible === true) {
       this.handleDisable(false);
     } else if ((!validateArray.every((item) => item === true))
-      && isVisible === false) {
+    && isVisible === false) {
       this.handleDisable(true);
     }
   }
@@ -46,11 +42,32 @@ class Login extends Component {
 
   handleClick = async () => {
     const { dispatch, history: { push } } = this.props;
-    dispatch(loginUser(this.state));
-    const response = await fetchToken();
-    localStorage.setItem('token', response.token);
-    dispatch(fetchTokenThunk(response.token));
-    push('/game');
+
+    const tokenLocalStorage = localStorage.getItem('token');
+
+    if (tokenLocalStorage) {
+      const { response_code: { code } } = await fetchQuestions(tokenLocalStorage);
+      const SUCESS_CODE = 0;
+
+      if (code === SUCESS_CODE) {
+        dispatch(loginUser(this.state));
+        push('/game');
+      } else {
+        const newToken = await fetchToken();
+        localStorage.setItem('token', newToken.token);
+
+        dispatch(loginUser(this.state));
+        dispatch(fetchTokenThunk(newToken.token));
+        push('/game');
+      }
+    } else {
+      const response = await fetchToken();
+      localStorage.setItem('token', response.token);
+
+      dispatch(loginUser(this.state));
+      dispatch(fetchTokenThunk(response.token));
+      push('/game');
+    }
   }
 
   handleChange = ({ target }) => {
@@ -114,7 +131,6 @@ export default connect(mapStateToProps)(Login);
 
 Login.defaultProps = {
   history: {},
-  token: '',
 };
 
 Login.propTypes = {
@@ -122,5 +138,4 @@ Login.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
   }),
-  token: PropTypes.string,
 };
