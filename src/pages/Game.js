@@ -2,16 +2,16 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Header from '../components/Header';
-// lalaland
+
 import { fetchQuestions } from '../services/api';
 import Question from '../components/Question';
-import QuestionTimer from '../components/QuestionTimer';
 
 class Game extends Component {
   state = {
     questions: [],
     tokenUser: '',
     numberLoop: 0,
+    seconds: 5,
     answered: false,
     isNotVisible: false,
   }
@@ -20,13 +20,26 @@ class Game extends Component {
     const { token } = this.props;
     const { results } = await fetchQuestions(token);
     this.setState({ questions: results, tokenUser: token });
+
+    this.timer();
   }
 
-  handleChange = ({ target }) => {
-    console.log(target);
-    if (target.value === 0) {
-      this.setState({ isNotVisible: true });
+  componentDidUpdate(_prevProps, prevState) {
+    if (prevState.seconds === 1) {
+      this.secondMutate();
     }
+  }
+
+  timer = () => {
+    const ONE_SECOND = 1000;
+    this.intervelId = setInterval(() => {
+      this.setState((prevState) => ({ seconds: prevState.seconds - 1 }));
+    }, ONE_SECOND);
+  }
+
+  secondMutate = () => {
+    clearInterval(this.intervelId);
+    this.setState({ seconds: 0, isNotVisible: true });
   }
 
   handleClick = () => {
@@ -36,70 +49,35 @@ class Game extends Component {
   handleNextQuestion = () => {
     const { numberLoop, questions } = this.state;
     const QUESTION_QUANTITY = questions.length;
-
     if (numberLoop < QUESTION_QUANTITY) {
       this.setState(
-        { numberLoop: numberLoop + 1,
+        {
+          numberLoop: numberLoop + 1,
           answered: false,
+          seconds: 5,
+          isNotVisible: false,
         },
       );
-    } else this.setState({ numberLoop: 0 });
-  }
-
-  randomAnswers = (question) => {
-    const { correct_answer: correct, incorrect_answers: incorrects } = question;
-    const { answered, isNotVisible } = this.state;
-
-    const answers = incorrects.map((answer, index) => {
-      const dataTestId = `wrong-answer-${index}`;
-      return (
-        <button
-          type="button"
-          key={ index }
-          data-testid={ dataTestId }
-          id={ dataTestId }
-          onClick={ this.handleClick }
-          disabled={ isNotVisible }
-          className={ `answer-btn ${answered ? 'invalid' : ''}` }
-        >
-          {answer}
-        </button>
-      );
-    });
-
-    answers.push(
-      <button
-        type="button"
-        key="correct-answer"
-        data-testid="correct-answer"
-        id="correct-answer"
-        onClick={ this.handleClick }
-        disabled={ isNotVisible }
-        className={ `answer-btn ${answered ? 'correct' : ''}` }
-      >
-        {correct}
-      </button>,
-    );
-    return this.randomizesAnswers(answers);
-  }
-
-  randomizesAnswers = (answers) => {
-    const VALUE_RANDOM = 0.5;
-    // Referência: https://flaviocopes.com/how-to-shuffle-array-javascript/
-    return answers.sort(() => Math.random() - VALUE_RANDOM);
+      this.timer();
+    } else this.setState({ numberLoop: questions.length - 1 });
   }
 
   quizGame = (question) => {
-    const answers = this.randomAnswers(question);
+    const { seconds, answered, isNotVisible } = this.state;
     return (
       <div className="question-background">
         <Question
           question={ question }
-          answers={ answers }
+          answered={ answered }
+          isNotVisible={ isNotVisible }
           clicked={ this.handleNextQuestion }
+          colorClick={ this.handleClick }
         />
-        <QuestionTimer handleChange={ this.handleChange } />
-      </div>);
+        <section>
+          <h3>{ seconds }</h3>
+        </section>
+      </div>
+    );
   }
 
   render() {
