@@ -4,18 +4,14 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 // lalaland
 import { fetchTokenThunk, loginUser } from '../redux/Action';
-import { fetchToken } from '../services/api';
+import { fetchToken, fetchQuestions } from '../services/api';
 
 class Login extends Component {
   state = {
     name: '',
     email: '',
     isVisible: true,
-  }
-
-  componentDidMount() {
-    const { token } = this.props;
-    console.log('componentDidMount(): ', token);
+    loaded: false,
   }
 
   componentDidUpdate() {
@@ -35,7 +31,7 @@ class Login extends Component {
     if (validateArray.every((item) => item === true) && isVisible === true) {
       this.handleDisable(false);
     } else if ((!validateArray.every((item) => item === true))
-      && isVisible === false) {
+    && isVisible === false) {
       this.handleDisable(true);
     }
   }
@@ -46,11 +42,32 @@ class Login extends Component {
 
   handleClick = async () => {
     const { dispatch, history: { push } } = this.props;
-    dispatch(loginUser(this.state));
     const response = await fetchToken();
-    localStorage.setItem('token', response.token);
-    dispatch(fetchTokenThunk(response.token));
-    push('/game');
+    await dispatch(fetchTokenThunk(response.token));
+
+    const { token } = this.props;
+
+    if (token) {
+      const questions = await fetchQuestions(token);
+      const SUCESS_CODE = 0;
+
+      if (questions.response_code === SUCESS_CODE) {
+        dispatch(loginUser(this.state));
+        push('/game');
+      } else {
+        const newToken = await fetchToken();
+        localStorage.setItem('token', newToken.token);
+
+        dispatch(loginUser(this.state));
+        await dispatch(fetchTokenThunk(newToken.token));
+        push('/game');
+      }
+    } else {
+      localStorage.setItem('token', response.token);
+
+      dispatch(loginUser(this.state));
+      push('/game');
+    }
   }
 
   handleChange = ({ target }) => {
@@ -107,7 +124,7 @@ class Login extends Component {
 }
 const mapStateToProps = (state) => ({
   user: state.user,
-  token: state.token.token,
+  token: state.token,
 });
 
 export default connect(mapStateToProps)(Login);

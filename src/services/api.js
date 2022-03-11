@@ -8,4 +8,12 @@ export const fetchToken = async () => {
   }
 };
 
-export const myshining = 'metal s';
+export const fetchQuestions = async (token) => {
+  try {
+    const data = await fetch(`https://opentdb.com/api.php?amount=5&token=${token}`);
+    const response = await data.json();
+    return response;
+  } catch (err) {
+    console.error(err.message);
+  }
+};
