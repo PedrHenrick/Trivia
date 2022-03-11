@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Header from '../components/Header';
-
+// lalaland
 import { fetchQuestions } from '../services/api';
 import Question from '../components/Question';
 import QuestionTimer from '../components/QuestionTimer';
