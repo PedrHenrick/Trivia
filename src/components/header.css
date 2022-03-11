@@ -1,0 +1,28 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background-color: #40916c;
+  box-shadow: 0 0 2rem #081c15;
+  display: flex;
+  height: 19vh;
+  justify-content: space-between;
+}
+
+h2 {
+  color: white;
+  margin: 10px;
+}
+
+ul {
+  display: flex;
+  margin: 21px;
+}
+
+li {
+  color: white;
+  list-style-type: none;
+  padding-left: 2rem;
+}
