@@ -11,34 +11,23 @@ class Game extends Component {
     questions: [],
     tokenUser: '',
     numberLoop: 0,
-    loaded: false,
     answered: false,
   }
 
   componentDidMount = async () => {
     const { token } = this.props;
-    this.setState({ loaded: true });
     const { results } = await fetchQuestions(token);
-    this.setState({ questions: results, tokenUser: token, loaded: false });
+    this.setState({ questions: results, tokenUser: token });
   }
 
-  handleClick = (event) => {
-    event.preventDefault();
-    // const { numberLoop } = this.state;
+  handleClick = () => {
     this.setState({ answered: true });
-
-    // const QUESTION_QUANTITY = 4;
-    // if (numberLoop < QUESTION_QUANTITY) {
-    //   this.setState(
-    //     { numberLoop: numberLoop + 1,
-    //     },
-    //   );
-    // } else this.setState({ numberLoop: 0 });
   }
 
   handleNextQuestion = () => {
-    const { numberLoop } = this.state;
-    const QUESTION_QUANTITY = 4;
+    const { numberLoop, questions } = this.state;
+    const QUESTION_QUANTITY = questions.length;
+
     if (numberLoop < QUESTION_QUANTITY) {
       this.setState(
         { numberLoop: numberLoop + 1,
@@ -51,6 +40,7 @@ class Game extends Component {
   randomAnswers = (question) => {
     const { correct_answer: correct, incorrect_answers: incorrects } = question;
     const { answered } = this.state;
+
     const answers = incorrects.map((answer, index) => {
       const dataTestId = `wrong-answer-${index}`;
       return (
@@ -85,8 +75,7 @@ class Game extends Component {
   randomizesAnswers = (answers) => {
     const VALUE_RANDOM = 0.5;
     // Referência: https://flaviocopes.com/how-to-shuffle-array-javascript/
-    const randomAnswers = answers.sort(() => Math.random() - VALUE_RANDOM);
-    return randomAnswers;
+    return answers.sort(() => Math.random() - VALUE_RANDOM);
   }
 
   quizGame = (question) => {
@@ -102,12 +91,11 @@ class Game extends Component {
   }
 
   render() {
-    const { tokenUser, questions, numberLoop, loaded } = this.state;
+    const { tokenUser, questions, numberLoop } = this.state;
     return (
       <div>
         <Header />
         <main>
-          { loaded ? <h3>Loading....</h3> : null }
           { tokenUser && this.quizGame(questions[numberLoop]) }
         </main>
       </div>
