@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { nanoid } from 'nanoid';
 
 import { fetchQuestions } from '../services/api';
 
@@ -49,7 +48,7 @@ class Game extends Component {
     answers.push(
       <button
         type="button"
-        key={ nanoid() }
+        key="correct-answer"
         data-testid="correct-answer"
         onClick={ this.handleClick }
       >
