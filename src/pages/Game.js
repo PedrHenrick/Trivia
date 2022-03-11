@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { fetchQuestions } from '../services/api';
+import Question from '../components/Question';
 
 class Game extends Component {
   state = {
@@ -10,6 +11,7 @@ class Game extends Component {
     tokenUser: '',
     numberLoop: 0,
     loaded: false,
+    answered: false,
   }
 
   componentDidMount = async () => {
@@ -21,16 +23,20 @@ class Game extends Component {
 
   handleClick = () => {
     const { numberLoop } = this.state;
+    this.setState({ answered: true });
 
     const QUESTION_QUANTITY = 4;
-
-    if (numberLoop < QUESTION_QUANTITY) this.setState({ numberLoop: numberLoop + 1 });
-    else this.setState({ numberLoop: 0 });
+    if (numberLoop < QUESTION_QUANTITY) {
+      this.setState(
+        { numberLoop: numberLoop + 1,
+        },
+      );
+    } else this.setState({ numberLoop: 0 });
   }
 
   randomAnswers = (question) => {
     const { correct_answer: correct, incorrect_answers: incorrects } = question;
-
+    const { answered } = this.state;
     const answers = incorrects.map((answer, index) => {
       const dataTestId = `wrong-answer-${index}`;
       return (
@@ -38,7 +44,9 @@ class Game extends Component {
           type="button"
           key={ index }
           data-testid={ dataTestId }
+          id={ dataTestId }
           onClick={ this.handleClick }
+          className={ `answer-btn ${answered ? 'invalid' : ''}` }
         >
           {answer}
         </button>
@@ -50,7 +58,9 @@ class Game extends Component {
         type="button"
         key="correct-answer"
         data-testid="correct-answer"
+        id="correct-answer"
         onClick={ this.handleClick }
+        className={ `answer-btn ${answered ? 'correct' : ''}` }
       >
         {correct}
       </button>,
@@ -61,7 +71,6 @@ class Game extends Component {
 
   randomizesAnswers = (answers) => {
     const VALUE_RANDOM = 0.5;
-
     // Referência: https://flaviocopes.com/how-to-shuffle-array-javascript/
     const randomAnswers = answers.sort(() => Math.random() - VALUE_RANDOM);
     return randomAnswers;
@@ -70,12 +79,9 @@ class Game extends Component {
   quizGame = (question) => {
     const answers = this.randomAnswers(question);
     return (
-      <section className="question-container">
-        <p data-testid="question-category">{question.category}</p>
-        <p data-testid="question-text">{question.question}</p>
-        <div data-testid="answer-options">{answers}</div>
-      </section>
-    );
+      <div className="question-background">
+        <Question question={ question } answers={ answers } />
+      </div>);
   }
 
   render() {

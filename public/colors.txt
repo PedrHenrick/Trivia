@@ -1,0 +1,10 @@
+light-green - #55efc4
+dark green - #00b894
+text - #2d3436
+
+categories
+cat-1 - #c0392b
+cat-2 - #5c2c70
+cat-3 - #2980b9
+cat-4 - #44bd32
+cat-5 - #2c3e50
