@@ -16,24 +16,22 @@ class Header extends Component {
     console.log('Teste: ', emailCrypto);
     const { score } = this.state;
     return (
-      <main>
-        <header>
-          <h2 id="logo">Trivia</h2>
-          <ul>
-            <li data-testid="header-player-name">{`Player: ${name}`}</li>
-            <li data-testid="header-score">{`Score: ${score}`}</li>
-            <li><Link to="/">Sair</Link></li>
-            <li>
-              <img
-                id="gravatar"
-                data-testid="header-profile-picture"
-                alt="imagem do avatar"
-                src={ `https://www.gravatar.com/avatar/${emailCrypto}` }
-              />
-            </li>
-          </ul>
-        </header>
-      </main>
+      <header>
+        <h2 id="logo">Trivia</h2>
+        <ul>
+          <li data-testid="header-player-name">{`Player: ${name}`}</li>
+          <li data-testid="header-score">{`Score: ${score}`}</li>
+          <li><Link to="/">Sair</Link></li>
+          <li>
+            <img
+              id="gravatar"
+              data-testid="header-profile-picture"
+              alt="imagem do avatar"
+              src={ `https://www.gravatar.com/avatar/${emailCrypto}` }
+            />
+          </li>
+        </ul>
+      </header>
     );
   }
 }
