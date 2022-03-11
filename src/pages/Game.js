@@ -5,7 +5,7 @@ import Header from '../components/Header';
 
 import { fetchQuestions } from '../services/api';
 import Question from '../components/Question';
-import QuestionTimer from './QuestionTimer'
+import QuestionTimer from '../components/QuestionTimer';
 
 class Game extends Component {
   state = {
