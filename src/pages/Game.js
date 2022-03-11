@@ -5,6 +5,7 @@ import Header from '../components/Header';
 
 import { fetchQuestions } from '../services/api';
 import Question from '../components/Question';
+import QuestionTimer from './QuestionTimer'
 
 class Game extends Component {
   state = {
@@ -12,12 +13,20 @@ class Game extends Component {
     tokenUser: '',
     numberLoop: 0,
     answered: false,
+    isNotVisible: false,
   }
 
   componentDidMount = async () => {
     const { token } = this.props;
     const { results } = await fetchQuestions(token);
     this.setState({ questions: results, tokenUser: token });
+  }
+
+  handleChange = ({ target }) => {
+    console.log(target);
+    if (target.value === 0) {
+      this.setState({ isNotVisible: true });
+    }
   }
 
   handleClick = () => {
@@ -39,7 +48,7 @@ class Game extends Component {
 
   randomAnswers = (question) => {
     const { correct_answer: correct, incorrect_answers: incorrects } = question;
-    const { answered } = this.state;
+    const { answered, isNotVisible } = this.state;
 
     const answers = incorrects.map((answer, index) => {
       const dataTestId = `wrong-answer-${index}`;
@@ -50,6 +59,7 @@ class Game extends Component {
           data-testid={ dataTestId }
           id={ dataTestId }
           onClick={ this.handleClick }
+          disabled={ isNotVisible }
           className={ `answer-btn ${answered ? 'invalid' : ''}` }
         >
           {answer}
@@ -64,6 +74,7 @@ class Game extends Component {
         data-testid="correct-answer"
         id="correct-answer"
         onClick={ this.handleClick }
+        disabled={ isNotVisible }
         className={ `answer-btn ${answered ? 'correct' : ''}` }
       >
         {correct}
@@ -87,6 +98,7 @@ class Game extends Component {
           answers={ answers }
           clicked={ this.handleNextQuestion }
         />
+        <QuestionTimer handleChange={ this.handleChange } />
       </div>);
   }
 
