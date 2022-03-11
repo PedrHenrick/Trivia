@@ -21,14 +21,27 @@ class Game extends Component {
     this.setState({ questions: results, tokenUser: token, loaded: false });
   }
 
-  handleClick = () => {
-    const { numberLoop } = this.state;
+  handleClick = (event) => {
+    event.preventDefault();
+    // const { numberLoop } = this.state;
     this.setState({ answered: true });
 
+    // const QUESTION_QUANTITY = 4;
+    // if (numberLoop < QUESTION_QUANTITY) {
+    //   this.setState(
+    //     { numberLoop: numberLoop + 1,
+    //     },
+    //   );
+    // } else this.setState({ numberLoop: 0 });
+  }
+
+  handleNextQuestion = () => {
+    const { numberLoop } = this.state;
     const QUESTION_QUANTITY = 4;
     if (numberLoop < QUESTION_QUANTITY) {
       this.setState(
         { numberLoop: numberLoop + 1,
+          answered: false,
         },
       );
     } else this.setState({ numberLoop: 0 });
@@ -65,7 +78,6 @@ class Game extends Component {
         {correct}
       </button>,
     );
-
     return this.randomizesAnswers(answers);
   }
 
@@ -80,7 +92,11 @@ class Game extends Component {
     const answers = this.randomAnswers(question);
     return (
       <div className="question-background">
-        <Question question={ question } answers={ answers } />
+        <Question
+          question={ question }
+          answers={ answers }
+          clicked={ this.handleNextQuestion }
+        />
       </div>);
   }
 
