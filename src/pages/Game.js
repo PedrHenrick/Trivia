@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import Header from '../components/Header';
 
 import { fetchQuestions } from '../services/api';
 
@@ -81,10 +82,13 @@ class Game extends Component {
   render() {
     const { tokenUser, questions, numberLoop, loaded } = this.state;
     return (
-      <main>
-        { loaded ? <h3>Loading....</h3> : null }
-        { tokenUser && this.quizGame(questions[numberLoop]) }
-      </main>
+      <div>
+        <Header />
+        <main>
+          { loaded ? <h3>Loading....</h3> : null }
+          { tokenUser && this.quizGame(questions[numberLoop]) }
+        </main>
+      </div>
     );
   }
 }
