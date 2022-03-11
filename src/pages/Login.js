@@ -42,14 +42,16 @@ class Login extends Component {
 
   handleClick = async () => {
     const { dispatch, history: { push } } = this.props;
+    const response = await fetchToken();
+    await dispatch(fetchTokenThunk(response.token));
 
-    const tokenLocalStorage = localStorage.getItem('token');
+    const { token } = this.props;
 
-    if (tokenLocalStorage) {
-      const { response_code: { code } } = await fetchQuestions(tokenLocalStorage);
+    if (token) {
+      const questions = await fetchQuestions(token);
       const SUCESS_CODE = 0;
 
-      if (code === SUCESS_CODE) {
+      if (questions.response_code === SUCESS_CODE) {
         dispatch(loginUser(this.state));
         push('/game');
       } else {
@@ -57,15 +59,13 @@ class Login extends Component {
         localStorage.setItem('token', newToken.token);
 
         dispatch(loginUser(this.state));
-        dispatch(fetchTokenThunk(newToken.token));
+        await dispatch(fetchTokenThunk(newToken.token));
         push('/game');
       }
     } else {
-      const response = await fetchToken();
       localStorage.setItem('token', response.token);
 
       dispatch(loginUser(this.state));
-      dispatch(fetchTokenThunk(response.token));
       push('/game');
     }
   }
@@ -124,13 +124,14 @@ class Login extends Component {
 }
 const mapStateToProps = (state) => ({
   user: state.user,
-  token: state.token.token,
+  token: state.token,
 });
 
 export default connect(mapStateToProps)(Login);
 
 Login.defaultProps = {
   history: {},
+  token: '',
 };
 
 Login.propTypes = {
@@ -138,4 +139,5 @@ Login.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
   }),
+  token: PropTypes.string,
 };
