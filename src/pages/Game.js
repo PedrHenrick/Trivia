@@ -11,7 +11,7 @@ class Game extends Component {
     questions: [],
     tokenUser: '',
     numberLoop: 0,
-    seconds: 5,
+    seconds: 30,
     answered: false,
     isNotVisible: false,
   }
@@ -54,7 +54,7 @@ class Game extends Component {
         {
           numberLoop: numberLoop + 1,
           answered: false,
-          seconds: 5,
+          seconds: 30,
           isNotVisible: false,
         },
       );

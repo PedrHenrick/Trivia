@@ -49,7 +49,7 @@ Question.propTypes = {
   clicked: PropTypes.func,
   colorClick: PropTypes.func,
   answered: PropTypes.bool.isRequired,
-  isNotVisible: PropTypes.isRequired,
+  isNotVisible: PropTypes.bool.isRequired,
 
 };
 

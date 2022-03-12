@@ -61,12 +61,12 @@ class Random extends Component {
 export default Random;
 
 Random.defaultProps = {
-  question: [],
+  question: {},
   colorClick: () => {},
 };
 
 Random.propTypes = {
-  question: PropTypes.arrayOf(PropTypes.any),
+  question: PropTypes.objectOf(PropTypes.any),
   colorClick: PropTypes.func,
   isNotVisible: PropTypes.bool.isRequired,
   answered: PropTypes.bool.isRequired,
