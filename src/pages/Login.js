@@ -62,11 +62,6 @@ class Login extends Component {
         await dispatch(fetchTokenThunk(newToken.token));
         push('/game');
       }
-    } else {
-      localStorage.setItem('token', response.token);
-
-      dispatch(loginUser(this.state));
-      push('/game');
     }
   }
 
