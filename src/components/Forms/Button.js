@@ -7,6 +7,7 @@ const Button = (props) => {
     <button
       type="button"
       onClick={ clicked }
+      data-testid="btn-next"
     >
       Proximo
     </button>
