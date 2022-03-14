@@ -8,6 +8,7 @@ const Button = (props) => {
       type="button"
       onClick={ clicked }
       disabled={ !isNotVisible }
+      data-testid="btn-next"
     >
       Proximo
     </button>

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Button from './Forms/Button';
 import Random from './Random';
-import { isShuffle, countdown, arrIsShuffle } from '../redux/Action';
+import { countdown, arrIsShuffle } from '../redux/Action';
 import QuestionTimer from './QuestionTimer';
 
 class Question extends Component {
@@ -16,8 +16,9 @@ class Question extends Component {
     const { dispatch, id, randomAnswers } = this.props;
 
     clearInterval(id);
+
     const color = randomAnswers.map((answer) => {
-      if (answer.props.id === 'correct-answer') {
+      if (answer.key === 'correct-answer') {
         answer = {
           ...answer,
           props: {
@@ -39,11 +40,8 @@ class Question extends Component {
       return answer;
     });
 
-    console.log(color);
-
     dispatch(arrIsShuffle(true, color));
     dispatch(countdown(true));
-    dispatch(isShuffle(true));
   }
 
   handleNextQuestion = () => {
@@ -57,7 +55,7 @@ class Question extends Component {
           numberLoop: numberLoop + 1,
         },
       );
-      dispatch(isShuffle(false));
+      dispatch(arrIsShuffle(false, []));
       dispatch(countdown(false));
     } else this.setState({ numberLoop: 0 });
   }

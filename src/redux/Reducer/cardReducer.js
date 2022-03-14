@@ -8,11 +8,6 @@ const INITIAL_STATE = {
 
 const cardReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-  case CARD_SHUFFLE:
-    return ({
-      ...state,
-      isShuffle: action.bool,
-    });
   case ARR_SHUFFLE:
     return ({
       ...state,

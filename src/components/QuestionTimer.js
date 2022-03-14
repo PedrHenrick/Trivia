@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { countdown } from '../redux/Action';
+import { countdown, arrIsShuffle } from '../redux/Action';
 
 class QuestionTimer extends Component {
   state = {
@@ -26,11 +26,24 @@ class QuestionTimer extends Component {
   }
 
   secondMutate = () => {
-    const { dispatch } = this.props;
+    const { dispatch, randomAnswers } = this.props;
 
     clearInterval(this.intervelId);
     this.setState({ seconds: 0 });
-    dispatch(countdown(true, this.intervelId));
+
+    const color = randomAnswers.map((answer) => {
+      answer = {
+        ...answer,
+        props: {
+          ...answer.props,
+          disabled: true,
+        },
+      };
+      return answer;
+    });
+
+    dispatch(arrIsShuffle(true, color));
+    dispatch(countdown(true, 0));
   }
 
   render() {
@@ -47,15 +60,18 @@ class QuestionTimer extends Component {
 
 const mapStateToProps = (state) => ({
   secondsGlobalState: state.timer.seconds,
+  randomAnswers: state.card.randomAnswers,
 });
 
 export default connect(mapStateToProps)(QuestionTimer);
 
 QuestionTimer.defaultProps = {
   // secondsGlobalState: 30,
+  randomAnswers: [],
 };
 
 QuestionTimer.propTypes = {
   // secondsGlobalState: PropTypes.number,
   dispatch: PropTypes.func.isRequired,
+  randomAnswers: PropTypes.arrayOf(PropTypes.any),
 };
