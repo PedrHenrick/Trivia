@@ -1,17 +1,71 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
 import PropTypes from 'prop-types';
 import Button from './Forms/Button';
 import Random from './Random';
+import { isShuffle, countdown, arrIsShuffle } from '../redux/Action';
+import QuestionTimer from './QuestionTimer';
 
 class Question extends Component {
+  state = {
+    numberLoop: 0,
+  }
+
+  handleClick = () => {
+    const { dispatch, id, randomAnswers } = this.props;
+
+    clearInterval(id);
+    const color = randomAnswers.map((answer) => {
+      if (answer.props.id === 'correct-answer') {
+        answer = {
+          ...answer,
+          props: {
+            ...answer.props,
+            disabled: true,
+            className: 'answer-btn correct',
+          },
+        };
+      } else {
+        answer = {
+          ...answer,
+          props: {
+            ...answer.props,
+            disabled: true,
+            className: 'answer-btn invalid',
+          },
+        };
+      }
+      return answer;
+    });
+
+    console.log(color);
+
+    dispatch(arrIsShuffle(true, color));
+    dispatch(countdown(true));
+    dispatch(isShuffle(true));
+  }
+
+  handleNextQuestion = () => {
+    const { numberLoop } = this.state;
+    const { dispatch, questions } = this.props;
+
+    const QUESTION_QUANTITY = questions.length;
+    if (numberLoop < QUESTION_QUANTITY - 1) {
+      this.setState(
+        {
+          numberLoop: numberLoop + 1,
+        },
+      );
+      dispatch(isShuffle(false));
+      dispatch(countdown(false));
+    } else this.setState({ numberLoop: 0 });
+  }
+
   render() {
-    const {
-      question,
-      clicked,
-      colorClick,
-      answered,
-      isNotVisible,
-    } = this.props;
+    const { numberLoop } = this.state;
+    const { questions, isNotVisible } = this.props;
+
     const MAX_COLORS = 5;
     const classCategory = `color-${Math.floor(Math.random() * MAX_COLORS)}`;
 
@@ -21,36 +75,38 @@ class Question extends Component {
           className={ `question__category ${classCategory}` }
           data-testid="question-category"
         >
-          {question.category}
+          {questions[numberLoop].category}
         </p>
-        <p data-testid="question-text">{question.question}</p>
+        <p data-testid="question-text">{questions[numberLoop].question}</p>
         <Random
-          question={ question }
-          colorClick={ colorClick }
-          answered={ answered }
-          isNotVisible={ isNotVisible }
+          question={ questions[numberLoop] }
+          colorClick={ this.handleClick }
+          shuffle={ false }
         />
-        <Button clicked={ clicked } />
+        <Button clicked={ this.handleNextQuestion } isNotVisible={ isNotVisible } />
+        <QuestionTimer />
       </section>
     );
   }
 }
 
+const mapStateToProps = (state) => ({
+  randomAnswers: state.card.randomAnswers,
+  isNotVisible: state.timer.isNotVisible,
+  id: state.timer.id,
+});
+
+export default connect(mapStateToProps)(Question);
+
 Question.defaultProps = {
-  clicked: () => '',
-  colorClick: () => {},
+  id: 0,
+  randomAnswers: [],
 };
 
 Question.propTypes = {
-  question: PropTypes.shape({
-    category: PropTypes.string,
-    question: PropTypes.string,
-  }).isRequired,
-  clicked: PropTypes.func,
-  colorClick: PropTypes.func,
-  answered: PropTypes.bool.isRequired,
+  questions: PropTypes.arrayOf(PropTypes.any).isRequired,
   isNotVisible: PropTypes.bool.isRequired,
-
+  dispatch: PropTypes.func.isRequired,
+  id: PropTypes.number,
+  randomAnswers: PropTypes.arrayOf(PropTypes.any),
 };
-
-export default Question;
