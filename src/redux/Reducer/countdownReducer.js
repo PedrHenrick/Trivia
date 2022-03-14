@@ -10,7 +10,7 @@ const countdownReducer = (state = INITIAL_STATE, action) => {
   case COUNTDOWN:
     return ({
       ...state,
-      isNotVisible: action.bool,
+      isVisible: action.bool,
       id: action.id,
     });
   default:

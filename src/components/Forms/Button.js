@@ -2,12 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const Button = (props) => {
-  const { clicked, isNotVisible } = props;
+  const { clicked } = props;
   return (
     <button
       type="button"
       onClick={ clicked }
-      disabled={ !isNotVisible }
       data-testid="btn-next"
     >
       Proximo
@@ -21,7 +20,6 @@ Button.defaultProps = {
 
 Button.propTypes = {
   clicked: PropTypes.func,
-  isNotVisible: PropTypes.bool.isRequired,
 };
 
 export default Button;

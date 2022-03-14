@@ -62,7 +62,7 @@ class Question extends Component {
 
   render() {
     const { numberLoop } = this.state;
-    const { questions, isNotVisible } = this.props;
+    const { questions, isVisible } = this.props;
 
     const MAX_COLORS = 5;
     const classCategory = `color-${Math.floor(Math.random() * MAX_COLORS)}`;
@@ -81,7 +81,9 @@ class Question extends Component {
           colorClick={ this.handleClick }
           shuffle={ false }
         />
-        <Button clicked={ this.handleNextQuestion } isNotVisible={ isNotVisible } />
+        { isVisible === true
+          ? (<Button clicked={ this.handleNextQuestion } />)
+          : null }
         <QuestionTimer />
       </section>
     );
@@ -90,7 +92,7 @@ class Question extends Component {
 
 const mapStateToProps = (state) => ({
   randomAnswers: state.card.randomAnswers,
-  isNotVisible: state.timer.isNotVisible,
+  isVisible: state.timer.isVisible,
   id: state.timer.id,
 });
 
@@ -103,7 +105,7 @@ Question.defaultProps = {
 
 Question.propTypes = {
   questions: PropTypes.arrayOf(PropTypes.any).isRequired,
-  isNotVisible: PropTypes.bool.isRequired,
+  isVisible: PropTypes.bool.isRequired,
   dispatch: PropTypes.func.isRequired,
   id: PropTypes.number,
   randomAnswers: PropTypes.arrayOf(PropTypes.any),
