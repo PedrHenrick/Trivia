@@ -5,8 +5,8 @@ import Button from '../components/Forms/Button';
 
 class Ranking extends Component {
   handleClick = () => {
-    // const { history: { push } } = this.props;
-    // push('/');
+    const { history: { push } } = this.props;
+    push('/');
   }
 
   render() {
