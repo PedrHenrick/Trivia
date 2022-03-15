@@ -52,7 +52,7 @@ class QuestionTimer extends Component {
   render() {
     const { seconds } = this.state;
     return (
-      <section>
+      <section className="sectionTimer">
         <h3 id="countdown">
           { seconds }
         </h3>

@@ -141,13 +141,18 @@ class Question extends Component {
         />
         { isVisible === true
           ? (
-            <Button
-              clicked={ this.handleNextQuestion }
-              dataTestId="btn-next"
-              btnName="Next"
-            />)
+            <div className="divNext">
+              <Button
+                clicked={ this.handleNextQuestion }
+                dataTestId="btn-next"
+                btnName="Next"
+                className="buttonNext"
+              />
+            </div>)
           : null }
-        <QuestionTimer />
+        <div className="divTimer">
+          <QuestionTimer />
+        </div>
       </section>
     );
   }

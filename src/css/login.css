@@ -1,0 +1,76 @@
+.divLogin {
+  align-items: center;
+  background-image: linear-gradient(to left top, #005242, #55efc4);
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  text-align: center;
+}
+
+.formLogin {
+  align-items: center;
+  background-image: linear-gradient(to left top, #1c9b75, #80e5ff);
+  border-radius: 50px 1px;
+  box-shadow: 1px 1px 7px 7px #081c15;
+  color: #081c15;
+  display: flex;
+  flex-direction: column;
+  height: 250px;
+  justify-content: center;
+  width: 350px;
+}
+
+input {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #081c15;
+  color: #081c15;
+  font-size: 15px;
+  font-weight: 900;
+  margin: 5px;
+  max-height: 30px;
+  max-width: 200px;
+  min-height: 30px;
+  min-width: 60px;
+}
+
+input:focus {
+  border: none;
+  border-bottom: 1px solid #081c15;
+  outline: none;
+}
+
+.buttonPlay:disabled {
+  background-color: #7c7c7c;
+  border: none;
+  border-radius: 7px;
+  color: #081c15;
+  cursor: not-allowed;
+  font-size: 15px;
+  font-weight: 900;
+  margin: 5px;
+  max-height: 40px;
+  max-width: 50px;
+  min-height: 40px;
+  min-width: 60px;
+}
+
+.buttonPlay:enabled {
+  background-color: #21dd76;
+  border: none;
+  border-radius: 7px;
+  color: #081c15;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 900;
+  margin: 5px;
+  max-height: 40px;
+  max-width: 50px;
+  min-height: 40px;
+  min-width: 60px;
+}
+
+.logoTriviaLogin {
+  height: 100px;
+  width: 240px;
+}

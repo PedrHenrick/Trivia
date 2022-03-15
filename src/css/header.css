@@ -5,7 +5,7 @@
 
 header {
   align-items: center;
-  background-color: #40916c;
+  background-image: linear-gradient(to left top, #005242, #55efc4);
   box-shadow: 0 0 2rem #081c15;
   display: flex;
   justify-content: space-around;
@@ -37,4 +37,3 @@ li {
   height: 60px;
   width: 150px;
 }
-
