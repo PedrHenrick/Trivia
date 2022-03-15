@@ -10,7 +10,10 @@ class Feedback extends Component {
     push('/ranking');
   }
 
-  handleClickPlayAgain = () => {}
+  handleClickPlayAgain = () => {
+    const { history: { push } } = this.props;
+    push('/');
+  }
 
   displayMessage = (correctAnswers) => {
     let message;
@@ -31,18 +34,18 @@ class Feedback extends Component {
       <div className="feedback-container">
         <Header />
         <div className="feedback_headings">
-          <h2 data-testid="feedback-text">{ message }</h2>
+          <h2 data-testid="feedback-text">{message}</h2>
           <h3>
             Você acertou
             {' '}
-            <span data-testid="feedback-total-question">{ assertions }</span>
+            <span data-testid="feedback-total-question">{assertions}</span>
             {' '}
             Questoes
           </h3>
           <h4>
             Um total de
             {' '}
-            <span data-testid="feedback-total-score">{ score }</span>
+            <span data-testid="feedback-total-score">{score}</span>
             {' '}
             Pontos
           </h4>
@@ -56,6 +59,7 @@ class Feedback extends Component {
           <Button
             clicked={ this.handleClickPlayAgain }
             btnName="Play Again"
+            dataTestId="btn-play-again"
           />
         </div>
       </div>
