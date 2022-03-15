@@ -6,6 +6,7 @@ const INITIAL_STATE = {
   name: '',
   email: '',
   score: 0,
+  assertions: 0,
 };
 
 const loginReducer = (state = INITIAL_STATE, action) => {
@@ -24,7 +25,7 @@ const loginReducer = (state = INITIAL_STATE, action) => {
   case ADD_CORRECT_ANSWERS:
     return ({
       ...state,
-      correctAnswers: action.payload.correctAnswers,
+      assertions: action.payload.assertions,
     });
 
   default:
