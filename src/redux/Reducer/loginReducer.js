@@ -1,5 +1,6 @@
 export const LOGIN_USER = 'LOGIN_USER';
 export const ADD_SCORE = 'ADD_SCORE';
+export const ADD_CORRECT_ANSWERS = 'ADD_CORRECT_ANSWERS';
 
 const INITIAL_STATE = {
   name: '',
@@ -19,6 +20,11 @@ const loginReducer = (state = INITIAL_STATE, action) => {
     return ({
       ...state,
       score: action.payload.score,
+    });
+  case ADD_CORRECT_ANSWERS:
+    return ({
+      ...state,
+      correctAnswers: action.payload.correctAnswers,
     });
 
   default:
