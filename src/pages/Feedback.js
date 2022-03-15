@@ -5,7 +5,10 @@ import Button from '../components/Forms/Button';
 import Header from '../components/Header';
 
 class Feedback extends Component {
-  handleClickRanking = () => {}
+  handleClickRanking = () => {
+    const { history: { push } } = this.props;
+    push('/ranking');
+  }
 
   handleClickPlayAgain = () => {}
 
@@ -45,8 +48,15 @@ class Feedback extends Component {
           </h4>
         </div>
         <div className="feedback_controls">
-          <Button clicked={ this.handleClickRanking } btnName="Ranking" />
-          <Button clicked={ this.handleClickPlayAgain } btnName="Play Again" />
+          <Button
+            clicked={ this.handleClickRanking }
+            btnName="Ranking"
+            dataTestId="btn-ranking"
+          />
+          <Button
+            clicked={ this.handleClickPlayAgain }
+            btnName="Play Again"
+          />
         </div>
       </div>
     );
@@ -61,9 +71,13 @@ const mapStateToProps = (state) => ({
 Feedback.defaultProps = {
   score: 0,
   assertions: 0,
+  history: {},
 };
 
 Feedback.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }),
   score: PropTypes.number,
   assertions: PropTypes.number,
 };
