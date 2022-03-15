@@ -27,13 +27,15 @@ class QuestionTimer extends Component {
     }
   }
 
+  componentWillUnmount() {
+    clearInterval(this.intervelId);
+  }
+
   secondMutate = () => {
     const { dispatch, randomAnswers } = this.props;
     const { seconds } = this.state;
 
     clearInterval(this.intervelId);
-    this.setState({ seconds: 0 });
-
     const color = randomAnswers.map((answer) => {
       answer = {
         ...answer,
@@ -44,7 +46,6 @@ class QuestionTimer extends Component {
       };
       return answer;
     });
-
     dispatch(arrIsShuffle(true, color));
     dispatch(countdownActionCreator(true, 0, seconds));
   }
@@ -69,12 +70,10 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps)(QuestionTimer);
 
 QuestionTimer.defaultProps = {
-  // secondsGlobalState: 30,
   randomAnswers: [],
 };
 
 QuestionTimer.propTypes = {
-  // secondsGlobalState: PropTypes.number,
   dispatch: PropTypes.func.isRequired,
   randomAnswers: PropTypes.arrayOf(PropTypes.any),
 };

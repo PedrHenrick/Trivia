@@ -16,6 +16,7 @@ class Question extends Component {
     numberLoop: 0,
     classCategory: '',
     correctAnswers: 0,
+    countdown: true,
   }
 
   componentDidMount() {
@@ -57,6 +58,7 @@ class Question extends Component {
   }
 
   handleClick = ({ target }) => {
+    this.setState({ countdown: false });
     const POINTS = 10;
     const { dispatch, id, randomAnswers, questions } = this.props;
     const { numberLoop } = this.state;
@@ -113,6 +115,7 @@ class Question extends Component {
           classCategory,
         },
       );
+      this.setState({ countdown: true });
       dispatch(arrIsShuffle(false, []));
       dispatch(countdownActionCreator(false));
     } else {
@@ -122,7 +125,7 @@ class Question extends Component {
   }
 
   render() {
-    const { numberLoop, classCategory } = this.state;
+    const { numberLoop, classCategory, countdown } = this.state;
     const { questions, isVisible } = this.props;
 
     return (
@@ -149,10 +152,11 @@ class Question extends Component {
                 className="buttonNext"
               />
             </div>)
-          : null }
-        <div className="divTimer">
-          <QuestionTimer />
-        </div>
+          : (
+            <div className="divTimer">
+              <QuestionTimer countdown={ countdown } />
+            </div>
+          ) }
       </section>
     );
   }
@@ -173,11 +177,12 @@ Question.defaultProps = {
   history: {
     push: () => '',
   },
+  isVisible: false,
 };
 
 Question.propTypes = {
   questions: PropTypes.arrayOf(PropTypes.any).isRequired,
-  isVisible: PropTypes.bool.isRequired,
+  isVisible: PropTypes.bool,
   dispatch: PropTypes.func.isRequired,
   id: PropTypes.number,
   randomAnswers: PropTypes.arrayOf(PropTypes.any),
