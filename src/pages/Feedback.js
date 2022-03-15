@@ -21,8 +21,8 @@ class Feedback extends Component {
   }
 
   render() {
-    const { score, correctAnswers } = this.props;
-    const message = this.displayMessage(correctAnswers);
+    const { score, assertions } = this.props;
+    const message = this.displayMessage(assertions);
 
     return (
       <div className="feedback-container">
@@ -30,21 +30,19 @@ class Feedback extends Component {
         <div className="feedback_headings">
           <h2 data-testid="feedback-text">{ message }</h2>
           <h3>
-            <span>
-              Você acertou
-              {' '}
-              { correctAnswers }
-              {' '}
-              Questoes
-            </span>
-            <span>
-              Um total de
-              {' '}
-              { score }
-              {' '}
-              Pontos
-            </span>
+            Você acertou
+            {' '}
+            <span data-testid="feedback-total-question">{ assertions }</span>
+            {' '}
+            Questoes
           </h3>
+          <h4>
+            Um total de
+            {' '}
+            <span data-testid="feedback-total-score">{ score }</span>
+            {' '}
+            Pontos
+          </h4>
         </div>
         <div className="feedback_controls">
           <Button clicked={ this.handleClickRanking } btnName="Ranking" />
@@ -57,17 +55,17 @@ class Feedback extends Component {
 
 const mapStateToProps = (state) => ({
   score: state.player.score,
-  correctAnswers: state.player.correctAnswers,
+  assertions: state.player.assertions,
 });
 
 Feedback.defaultProps = {
   score: 0,
-  correctAnswers: 0,
+  assertions: 0,
 };
 
 Feedback.propTypes = {
   score: PropTypes.number,
-  correctAnswers: PropTypes.number,
+  assertions: PropTypes.number,
 };
 
 export default connect(mapStateToProps)(Feedback);

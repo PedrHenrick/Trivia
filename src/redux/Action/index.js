@@ -37,9 +37,9 @@ export const addScoreAction = (score) => ({
   },
 });
 
-export const correctAnswersAction = (correctAnswers) => ({
+export const correctAnswersAction = (assertions) => ({
   type: ADD_CORRECT_ANSWERS,
   payload: {
-    correctAnswers,
+    assertions,
   },
 });
