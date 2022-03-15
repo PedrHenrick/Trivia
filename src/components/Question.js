@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 import PropTypes from 'prop-types';
 import Button from './Forms/Button';
@@ -90,7 +91,7 @@ class Question extends Component {
   handleNextQuestion = () => {
     const MAX_COLORS = 5;
     const { numberLoop } = this.state;
-    const { dispatch, questions } = this.props;
+    const { dispatch, questions, history: { push} } = this.props;
     const classCategory = `color-${Math.floor(Math.random() * MAX_COLORS)}`;
 
     const QUESTION_QUANTITY = questions.length;
@@ -103,7 +104,10 @@ class Question extends Component {
       );
       dispatch(arrIsShuffle(false, []));
       dispatch(countdownActionCreator(false));
-    } else this.setState({ numberLoop: 0 });
+    } else {
+      this.setState({ numberLoop: 0 });
+      push('/feedback');
+    }
   }
 
   render() {
@@ -140,7 +144,7 @@ const mapStateToProps = (state) => ({
   time: state.timer.seconds,
 });
 
-export default connect(mapStateToProps)(Question);
+export default connect(mapStateToProps)(withRouter(Question));
 
 Question.defaultProps = {
   id: 0,
