@@ -8,14 +8,10 @@ import logo from '../trivia.png';
 import '../css/header.css';
 
 class Header extends Component {
-  state = {
-    score: 0,
-  }
-
   render() {
-    const { user: { name, email } } = this.props;
+    const { user: { name, email, score } } = this.props;
     const emailCrypto = md5(email).toString();
-    const { score } = this.state;
+
     return (
       <header>
         <img
@@ -41,12 +37,16 @@ class Header extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({ user: state.user });
+const mapStateToProps = (state) => (
+  {
+    user: state.player,
+  });
 
 Header.propTypes = {
   user: PropTypes.shape({
     name: PropTypes.string,
     email: PropTypes.string,
+    score: PropTypes.number,
   }).isRequired,
 };
 
