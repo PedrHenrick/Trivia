@@ -29,7 +29,11 @@ class Header extends Component {
             />
           </li>
           <li data-testid="header-player-name">{`Player: ${name}`}</li>
-          <li data-testid="header-score">{`Score: ${score}`}</li>
+          <li>
+            Score:
+            { ' ' }
+            <span data-testid="header-score">{score}</span>
+          </li>
           <li><Link to="/">Sair</Link></li>
         </ul>
       </header>

@@ -129,7 +129,12 @@ class Question extends Component {
           shuffle={ false }
         />
         { isVisible === true
-          ? (<Button clicked={ this.handleNextQuestion } />)
+          ? (
+            <Button
+              clicked={ this.handleNextQuestion }
+              dataTestId="btn-next"
+              btnName="Next"
+            />)
           : null }
         <QuestionTimer />
       </section>
