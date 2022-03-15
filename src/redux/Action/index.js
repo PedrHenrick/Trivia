@@ -1,4 +1,4 @@
-import { LOGIN_USER } from '../Reducer/loginReducer';
+import { ADD_SCORE, LOGIN_USER } from '../Reducer/loginReducer';
 import { FETCH_TOKEN } from '../Reducer/tokenReducer';
 import { COUNTDOWN } from '../Reducer/countdownReducer';
 import { ARR_SHUFFLE } from '../Reducer/cardReducer';
@@ -17,14 +17,22 @@ export const fetchTokenThunk = (token) => ({
 });
 
 // Controlador do timer
-export const countdown = (bool, id) => ({
+export const countdownActionCreator = (bool, id, seconds) => ({
   type: COUNTDOWN,
   bool,
   id,
+  seconds,
 });
 
 export const arrIsShuffle = (bool, arr) => ({
   type: ARR_SHUFFLE,
   bool,
   arr,
+});
+
+export const addScoreAction = (score) => ({
+  type: ADD_SCORE,
+  payload: {
+    score,
+  },
 });

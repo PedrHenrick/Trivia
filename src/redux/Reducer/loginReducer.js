@@ -1,8 +1,10 @@
 export const LOGIN_USER = 'LOGIN_USER';
+export const ADD_SCORE = 'ADD_SCORE';
 
 const INITIAL_STATE = {
   name: '',
   email: '',
+  score: 0,
 };
 
 const loginReducer = (state = INITIAL_STATE, action) => {
@@ -13,6 +15,12 @@ const loginReducer = (state = INITIAL_STATE, action) => {
       name: action.payload.name,
       email: action.payload.email,
     });
+  case ADD_SCORE:
+    return ({
+      ...state,
+      score: action.payload.score,
+    });
+
   default:
     return state;
   }

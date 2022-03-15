@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { countdown, arrIsShuffle } from '../redux/Action';
+import { countdownActionCreator, arrIsShuffle } from '../redux/Action';
 
 class QuestionTimer extends Component {
   state = {
@@ -11,15 +11,17 @@ class QuestionTimer extends Component {
 
   componentDidMount() {
     const { dispatch } = this.props;
+    const { seconds } = this.state;
 
     const ONE_SECOND = 1000;
     this.intervelId = setInterval(() => {
       this.setState((prevState) => ({ seconds: prevState.seconds - 1 }));
     }, ONE_SECOND);
-    dispatch(countdown(false, this.intervelId));
+    dispatch(countdownActionCreator(false, this.intervelId, seconds));
   }
 
   componentDidUpdate(_prevProps, prevState) {
+    countdownActionCreator(false, 0, prevState.seconds);
     if (prevState.seconds === 1) {
       this.secondMutate();
     }
@@ -27,6 +29,7 @@ class QuestionTimer extends Component {
 
   secondMutate = () => {
     const { dispatch, randomAnswers } = this.props;
+    const { seconds } = this.state;
 
     clearInterval(this.intervelId);
     this.setState({ seconds: 0 });
@@ -43,14 +46,14 @@ class QuestionTimer extends Component {
     });
 
     dispatch(arrIsShuffle(true, color));
-    dispatch(countdown(true, 0));
+    dispatch(countdownActionCreator(true, 0, seconds));
   }
 
   render() {
     const { seconds } = this.state;
     return (
       <section>
-        <h3>
+        <h3 id="countdown">
           { seconds }
         </h3>
       </section>

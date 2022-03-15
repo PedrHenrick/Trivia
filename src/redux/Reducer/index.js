@@ -6,7 +6,7 @@ import countdownReducer from './countdownReducer';
 import cardReducer from './cardReducer';
 
 const rootReducer = combineReducers({
-  user: loginReducer,
+  player: loginReducer,
   token: tokenReducer,
   timer: countdownReducer,
   card: cardReducer,
