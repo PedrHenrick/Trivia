@@ -1,4 +1,4 @@
-import { ADD_SCORE, LOGIN_USER } from '../Reducer/loginReducer';
+import { ADD_CORRECT_ANSWERS, ADD_SCORE, LOGIN_USER } from '../Reducer/loginReducer';
 import { FETCH_TOKEN } from '../Reducer/tokenReducer';
 import { COUNTDOWN } from '../Reducer/countdownReducer';
 import { ARR_SHUFFLE } from '../Reducer/cardReducer';
@@ -34,5 +34,12 @@ export const addScoreAction = (score) => ({
   type: ADD_SCORE,
   payload: {
     score,
+  },
+});
+
+export const correctAnswersAction = (correctAnswers) => ({
+  type: ADD_CORRECT_ANSWERS,
+  payload: {
+    correctAnswers,
   },
 });

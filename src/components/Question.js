@@ -5,19 +5,29 @@ import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Button from './Forms/Button';
 import Random from './Random';
-import { countdownActionCreator, arrIsShuffle, addScoreAction } from '../redux/Action';
+import { countdownActionCreator,
+  arrIsShuffle,
+  addScoreAction,
+  correctAnswersAction } from '../redux/Action';
 import QuestionTimer from './QuestionTimer';
 
 class Question extends Component {
   state = {
     numberLoop: 0,
     classCategory: '',
+    correctAnswers: 0,
   }
 
   componentDidMount() {
     const MAX_COLORS = 5;
     const classCategory = `color-${Math.floor(Math.random() * MAX_COLORS)}`;
     this.setState({ classCategory });
+  }
+
+  componentDidUpdate() {
+    const { correctAnswers } = this.state;
+    const { dispatch } = this.props;
+    dispatch(correctAnswersAction(correctAnswers));
   }
 
   getScoreDifficulty = (difficulty) => {
@@ -56,6 +66,7 @@ class Question extends Component {
 
     if (currentQuestion.correct_answer === target.textContent) {
       const score = POINTS + (time * level);
+      this.setState((prevState) => ({ correctAnswers: prevState.correctAnswers + 1 }));
       dispatch(addScoreAction(score));
       this.saveScoreInLocalstorage(score);
     }
