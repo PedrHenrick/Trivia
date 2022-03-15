@@ -91,7 +91,7 @@ class Question extends Component {
   handleNextQuestion = () => {
     const MAX_COLORS = 5;
     const { numberLoop } = this.state;
-    const { dispatch, questions, history: { push} } = this.props;
+    const { dispatch, questions, history: { push } } = this.props;
     const classCategory = `color-${Math.floor(Math.random() * MAX_COLORS)}`;
 
     const QUESTION_QUANTITY = questions.length;
@@ -149,6 +149,9 @@ export default connect(mapStateToProps)(withRouter(Question));
 Question.defaultProps = {
   id: 0,
   randomAnswers: [],
+  history: {
+    push: () => '',
+  },
 };
 
 Question.propTypes = {
@@ -157,4 +160,7 @@ Question.propTypes = {
   dispatch: PropTypes.func.isRequired,
   id: PropTypes.number,
   randomAnswers: PropTypes.arrayOf(PropTypes.any),
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }),
 };
