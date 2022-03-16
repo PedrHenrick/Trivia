@@ -16,7 +16,6 @@ class Question extends Component {
     numberLoop: 0,
     classCategory: '',
     correctAnswers: 0,
-    countdown: true,
   }
 
   componentDidMount() {
@@ -58,9 +57,8 @@ class Question extends Component {
   }
 
   handleClick = ({ target }) => {
-    this.setState({ countdown: false });
     const POINTS = 10;
-    const { dispatch, id, randomAnswers, questions } = this.props;
+    const { dispatch, randomAnswers, questions } = this.props;
     const { numberLoop } = this.state;
     const time = Number(document.getElementById('countdown').innerText);
     const currentQuestion = questions[numberLoop];
@@ -72,7 +70,6 @@ class Question extends Component {
       dispatch(addScoreAction(score));
       this.saveScoreInLocalstorage(score);
     }
-    clearInterval(id);
 
     const color = randomAnswers.map((answer) => {
       if (answer.key === 'correct-answer') {
@@ -115,7 +112,6 @@ class Question extends Component {
           classCategory,
         },
       );
-      this.setState({ countdown: true });
       dispatch(arrIsShuffle(false, []));
       dispatch(countdownActionCreator(false));
     } else {
@@ -125,9 +121,8 @@ class Question extends Component {
   }
 
   render() {
-    const { numberLoop, classCategory, countdown } = this.state;
+    const { numberLoop, classCategory } = this.state;
     const { questions, isVisible } = this.props;
-
     return (
       <section className="question-container">
         <p
@@ -154,7 +149,7 @@ class Question extends Component {
             </div>)
           : (
             <div className="divTimer">
-              <QuestionTimer countdown={ countdown } />
+              <QuestionTimer />
             </div>
           ) }
       </section>
@@ -165,14 +160,12 @@ class Question extends Component {
 const mapStateToProps = (state) => ({
   randomAnswers: state.card.randomAnswers,
   isVisible: state.timer.isVisible,
-  id: state.timer.id,
   time: state.timer.seconds,
 });
 
 export default connect(mapStateToProps)(withRouter(Question));
 
 Question.defaultProps = {
-  id: 0,
   randomAnswers: [],
   history: {
     push: () => '',
@@ -184,7 +177,6 @@ Question.propTypes = {
   questions: PropTypes.arrayOf(PropTypes.any).isRequired,
   isVisible: PropTypes.bool,
   dispatch: PropTypes.func.isRequired,
-  id: PropTypes.number,
   randomAnswers: PropTypes.arrayOf(PropTypes.any),
   history: PropTypes.shape({
     push: PropTypes.func,

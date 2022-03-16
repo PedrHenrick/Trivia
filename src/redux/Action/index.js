@@ -20,7 +20,6 @@ export const fetchTokenThunk = (token) => ({
 export const countdownActionCreator = (bool, id, seconds) => ({
   type: COUNTDOWN,
   bool,
-  id,
   seconds,
 });
 

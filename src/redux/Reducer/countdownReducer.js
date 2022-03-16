@@ -11,7 +11,6 @@ const countdownReducer = (state = INITIAL_STATE, action) => {
     return ({
       ...state,
       isVisible: action.bool,
-      id: action.id,
     });
   default:
     return state;
