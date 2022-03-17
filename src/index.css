@@ -86,7 +86,40 @@ body {
   border: 1px solid #34495e;
   border-radius: 5px;
   padding: 0.5rem 1.2rem;
+  cursor: pointer;
 }
 
+.divNext {
+  display: flex;
+  justify-content: center;
+}
 
+.buttonNext {
+  align-items: center;
+  background-color: #21dd76;
+  border: none;
+  border-radius: 7px;
+  cursor: pointer;
+  display: flex;
+  font-weight: 700;
+  justify-content: center;
+  max-height: 35px;
+  max-width: 70px;
+  min-height: 35px;
+  min-width: 70px;
+}
 
+.divTimer {
+  margin-top: 5px;
+  display: flex;
+  justify-content: center;
+}
+
+.sectionTimer {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  border: 4px outset #21dd76;
+  border-radius: 7px;
+  padding: 10px;
+}

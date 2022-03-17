@@ -1,10 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 // lalaland
-import { fetchTokenThunk, loginUser } from '../redux/Action';
+import '../css/login.css';
+import logo from '../trivia.png';
 import { fetchToken, fetchQuestions } from '../services/api';
+
+import { countdownActionCreator,
+  arrIsShuffle,
+  addScoreAction,
+  fetchTokenThunk,
+  correctAnswersAction,
+  loginUser,
+} from '../redux/Action';
 
 class Login extends Component {
   state = {
@@ -12,6 +20,16 @@ class Login extends Component {
     email: '',
     isVisible: true,
     loaded: false,
+  }
+
+  componentDidMount() {
+    const { dispatch } = this.props;
+    dispatch(arrIsShuffle());
+    dispatch(countdownActionCreator());
+    dispatch(addScoreAction());
+    dispatch(loginUser());
+    dispatch(correctAnswersAction());
+    dispatch(fetchTokenThunk());
   }
 
   componentDidUpdate() {
@@ -74,9 +92,16 @@ class Login extends Component {
 
   render() {
     const { name, email, isVisible } = this.state;
+    const { history: { push } } = this.props;
+
     return (
-      <div>
-        <form>
+      <div className="divLogin">
+        <form className="formLogin">
+          <img
+            className="logoTriviaLogin"
+            src={ logo }
+            alt="logo trivia"
+          />
           <label htmlFor="name">
             Player:
             {' '}
@@ -101,17 +126,25 @@ class Login extends Component {
               onChange={ this.handleChange }
             />
           </label>
-          <button
-            type="button"
-            data-testid="btn-play"
-            disabled={ isVisible }
-            onClick={ this.handleClick }
-          >
-            Play
-          </button>
-          <button type="button" data-testid="btn-settings">
-            <Link to="/settings">Settings</Link>
-          </button>
+          <nav className="buttonNav">
+            <button
+              type="button"
+              data-testid="btn-play"
+              disabled={ isVisible }
+              className="buttonPlay"
+              onClick={ this.handleClick }
+            >
+              Play
+            </button>
+            <button
+              type="button"
+              data-testid="btn-settings"
+              className="buttonPlay"
+              onClick={ () => push('/settings') }
+            >
+              Settings
+            </button>
+          </nav>
         </form>
       </div>
     );

@@ -8,7 +8,8 @@ import Random from './Random';
 import { countdownActionCreator,
   arrIsShuffle,
   addScoreAction,
-  correctAnswersAction } from '../redux/Action';
+  correctAnswersAction,
+} from '../redux/Action';
 import QuestionTimer from './QuestionTimer';
 
 class Question extends Component {
@@ -24,12 +25,6 @@ class Question extends Component {
     this.setState({ classCategory });
   }
 
-  componentDidUpdate() {
-    const { correctAnswers } = this.state;
-    const { dispatch } = this.props;
-    dispatch(correctAnswersAction(correctAnswers));
-  }
-
   getScoreDifficulty = (difficulty) => {
     let level;
 
@@ -43,34 +38,39 @@ class Question extends Component {
     return level;
   }
 
-  saveScoreInLocalstorage = (score) => {
-    const storage = localStorage.getItem('score') ?? false;
+  saveGameinfoInStorage = () => {
+    const { player } = this.props;
+    const game = { ...player };
+    const storage = localStorage.getItem('game');
+
+    let array = [game];
 
     if (storage) {
-      localStorage.removeItem('score');
-      if (score > 0) {
-        localStorage.setItem('score', score);
-      }
-    } else {
-      localStorage.setItem('score', score);
+      array = [...JSON.parse(storage), game];
     }
+    localStorage.setItem('game', JSON.stringify(array));
   }
 
   handleClick = ({ target }) => {
-    const POINTS = 10;
-    const { dispatch, id, randomAnswers, questions } = this.props;
-    const { numberLoop } = this.state;
-    const time = Number(document.getElementById('countdown').innerText);
+    const { dispatch, randomAnswers, questions, scoreTotal } = this.props;
+    const { numberLoop, correctAnswers } = this.state;
     const currentQuestion = questions[numberLoop];
-    const level = this.getScoreDifficulty(currentQuestion.difficulty);
 
     if (currentQuestion.correct_answer === target.textContent) {
+      const POINTS = 10;
+      const time = Number(document.getElementById('countdown').innerText);
+
+      const level = this.getScoreDifficulty(currentQuestion.difficulty);
+
       const score = POINTS + (time * level);
-      this.setState((prevState) => ({ correctAnswers: prevState.correctAnswers + 1 }));
-      dispatch(addScoreAction(score));
-      this.saveScoreInLocalstorage(score);
+
+      this.setState((prevState) => ({
+        correctAnswers: prevState.correctAnswers + 1,
+        scoreTotal: score + prevState.scoreTotal }));
+
+      dispatch(addScoreAction(score + scoreTotal));
+      dispatch(correctAnswersAction(correctAnswers + 1));
     }
-    clearInterval(id);
 
     const color = randomAnswers.map((answer) => {
       if (answer.key === 'correct-answer') {
@@ -96,7 +96,7 @@ class Question extends Component {
     });
 
     dispatch(arrIsShuffle(true, color));
-    dispatch(countdownActionCreator(true, 0, time));
+    dispatch(countdownActionCreator(true));
   }
 
   handleNextQuestion = () => {
@@ -107,16 +107,12 @@ class Question extends Component {
 
     const QUESTION_QUANTITY = questions.length;
     if (numberLoop < QUESTION_QUANTITY - 1) {
-      this.setState(
-        {
-          numberLoop: numberLoop + 1,
-          classCategory,
-        },
-      );
+      this.setState({ numberLoop: numberLoop + 1, classCategory });
       dispatch(arrIsShuffle(false, []));
       dispatch(countdownActionCreator(false));
     } else {
       this.setState({ numberLoop: 0 });
+      this.saveGameinfoInStorage();
       push('/feedback');
     }
   }
@@ -124,7 +120,6 @@ class Question extends Component {
   render() {
     const { numberLoop, classCategory } = this.state;
     const { questions, isVisible } = this.props;
-
     return (
       <section className="question-container">
         <p
@@ -141,13 +136,19 @@ class Question extends Component {
         />
         { isVisible === true
           ? (
-            <Button
-              clicked={ this.handleNextQuestion }
-              dataTestId="btn-next"
-              btnName="Next"
-            />)
-          : null }
-        <QuestionTimer />
+            <div className="divNext">
+              <Button
+                clicked={ this.handleNextQuestion }
+                dataTestId="btn-next"
+                btnName="Next"
+                className="buttonNext"
+              />
+            </div>)
+          : (
+            <div className="divTimer">
+              <QuestionTimer />
+            </div>
+          ) }
       </section>
     );
   }
@@ -156,27 +157,30 @@ class Question extends Component {
 const mapStateToProps = (state) => ({
   randomAnswers: state.card.randomAnswers,
   isVisible: state.timer.isVisible,
-  id: state.timer.id,
-  time: state.timer.seconds,
+  player: state.player,
+  scoreTotal: state.player.score,
 });
 
 export default connect(mapStateToProps)(withRouter(Question));
 
 Question.defaultProps = {
-  id: 0,
   randomAnswers: [],
   history: {
     push: () => '',
   },
+  isVisible: false,
+  player: {},
+  scoreTotal: 0,
 };
 
 Question.propTypes = {
   questions: PropTypes.arrayOf(PropTypes.any).isRequired,
-  isVisible: PropTypes.bool.isRequired,
+  isVisible: PropTypes.bool,
   dispatch: PropTypes.func.isRequired,
-  id: PropTypes.number,
   randomAnswers: PropTypes.arrayOf(PropTypes.any),
   history: PropTypes.shape({
     push: PropTypes.func,
   }),
+  player: PropTypes.objectOf(PropTypes.any),
+  scoreTotal: PropTypes.number,
 };
