@@ -52,7 +52,7 @@ class Question extends Component {
   }
 
   handleClick = ({ target }) => {
-    const { dispatch, randomAnswers, questions } = this.props;
+    const { dispatch, randomAnswers, questions, scoreTotal } = this.props;
     const { numberLoop, correctAnswers } = this.state;
     const currentQuestion = questions[numberLoop];
 
@@ -64,8 +64,11 @@ class Question extends Component {
 
       const score = POINTS + (time * level);
 
-      this.setState((prevState) => ({ correctAnswers: prevState.correctAnswers + 1 }));
-      dispatch(addScoreAction(score));
+      this.setState((prevState) => ({
+        correctAnswers: prevState.correctAnswers + 1,
+        scoreTotal: score + prevState.scoreTotal }));
+
+      dispatch(addScoreAction(score + scoreTotal));
       dispatch(correctAnswersAction(correctAnswers + 1));
     }
 
@@ -155,6 +158,7 @@ const mapStateToProps = (state) => ({
   randomAnswers: state.card.randomAnswers,
   isVisible: state.timer.isVisible,
   player: state.player,
+  scoreTotal: state.player.score,
 });
 
 export default connect(mapStateToProps)(withRouter(Question));
@@ -166,6 +170,7 @@ Question.defaultProps = {
   },
   isVisible: false,
   player: {},
+  scoreTotal: 0,
 };
 
 Question.propTypes = {
@@ -177,4 +182,5 @@ Question.propTypes = {
     push: PropTypes.func,
   }),
   player: PropTypes.objectOf(PropTypes.any),
+  scoreTotal: PropTypes.number,
 };

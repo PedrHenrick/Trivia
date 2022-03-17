@@ -4,23 +4,7 @@ import PropTypes from 'prop-types';
 import Button from '../components/Forms/Button';
 import Header from '../components/Header';
 
-import { countdownActionCreator,
-  arrIsShuffle,
-  addScoreAction,
-  correctAnswersAction,
-  loginUser,
-} from '../redux/Action';
-
 class Feedback extends Component {
-  componentWillUnmount() {
-    const { dispatch } = this.props;
-    dispatch(arrIsShuffle());
-    dispatch(countdownActionCreator());
-    dispatch(addScoreAction());
-    dispatch(loginUser());
-    dispatch(correctAnswersAction());
-  }
-
   handleClickRanking = () => {
     const { history: { push } } = this.props;
     push('/ranking');
@@ -92,7 +76,6 @@ Feedback.defaultProps = {
   score: 0,
   assertions: 0,
   history: {},
-  dispatch: () => {},
 };
 
 Feedback.propTypes = {
@@ -101,7 +84,6 @@ Feedback.propTypes = {
   }),
   score: PropTypes.number,
   assertions: PropTypes.number,
-  dispatch: PropTypes.func,
 };
 
 export default connect(mapStateToProps)(Feedback);

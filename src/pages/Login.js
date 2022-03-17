@@ -4,8 +4,15 @@ import PropTypes from 'prop-types';
 // lalaland
 import '../css/login.css';
 import logo from '../trivia.png';
-import { fetchTokenThunk, loginUser } from '../redux/Action';
 import { fetchToken, fetchQuestions } from '../services/api';
+
+import { countdownActionCreator,
+  arrIsShuffle,
+  addScoreAction,
+  fetchTokenThunk,
+  correctAnswersAction,
+  loginUser,
+} from '../redux/Action';
 
 class Login extends Component {
   state = {
@@ -13,6 +20,16 @@ class Login extends Component {
     email: '',
     isVisible: true,
     loaded: false,
+  }
+
+  componentDidMount() {
+    const { dispatch } = this.props;
+    dispatch(arrIsShuffle());
+    dispatch(countdownActionCreator());
+    dispatch(addScoreAction());
+    dispatch(loginUser());
+    dispatch(correctAnswersAction());
+    dispatch(fetchTokenThunk());
   }
 
   componentDidUpdate() {

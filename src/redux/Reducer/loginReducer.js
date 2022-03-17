@@ -20,7 +20,7 @@ const loginReducer = (state = INITIAL_STATE, action) => {
   case ADD_SCORE:
     return ({
       ...state,
-      score: state.score + action.payload.score,
+      score: action.payload.score,
     });
   case ADD_CORRECT_ANSWERS:
     return ({

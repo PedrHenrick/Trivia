@@ -27,7 +27,7 @@ export const fetchTokenThunk = (token) => {
   if (token === undefined) {
     return {
       type: FETCH_TOKEN,
-      token,
+      token: '',
     };
   } if (token !== undefined) {
     return {
