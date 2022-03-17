@@ -8,7 +8,8 @@ import Random from './Random';
 import { countdownActionCreator,
   arrIsShuffle,
   addScoreAction,
-  correctAnswersAction } from '../redux/Action';
+  correctAnswersAction,
+} from '../redux/Action';
 import QuestionTimer from './QuestionTimer';
 
 class Question extends Component {
@@ -24,12 +25,6 @@ class Question extends Component {
     this.setState({ classCategory });
   }
 
-  componentDidUpdate() {
-    const { correctAnswers } = this.state;
-    const { dispatch } = this.props;
-    dispatch(correctAnswersAction(correctAnswers));
-  }
-
   getScoreDifficulty = (difficulty) => {
     let level;
 
@@ -43,23 +38,23 @@ class Question extends Component {
     return level;
   }
 
-  saveScoreInLocalstorage = (score) => {
-    const storage = localStorage.getItem('score') ?? false;
+  saveGameinfoInStorage = () => {
+    const { player } = this.props;
+    const game = { ...player };
+    const storage = localStorage.getItem('game');
+
+    let array = [game];
 
     if (storage) {
-      localStorage.removeItem('score');
-      if (score > 0) {
-        localStorage.setItem('score', score);
-      }
-    } else {
-      localStorage.setItem('score', score);
+      array = [...JSON.parse(storage), game];
     }
+    localStorage.setItem('game', JSON.stringify(array));
   }
 
   handleClick = ({ target }) => {
     const POINTS = 10;
     const { dispatch, randomAnswers, questions } = this.props;
-    const { numberLoop } = this.state;
+    const { numberLoop, correctAnswers } = this.state;
     const time = Number(document.getElementById('countdown').innerText);
     const currentQuestion = questions[numberLoop];
     const level = this.getScoreDifficulty(currentQuestion.difficulty);
@@ -68,7 +63,7 @@ class Question extends Component {
       const score = POINTS + (time * level);
       this.setState((prevState) => ({ correctAnswers: prevState.correctAnswers + 1 }));
       dispatch(addScoreAction(score));
-      this.saveScoreInLocalstorage(score);
+      dispatch(correctAnswersAction(correctAnswers + 1));
     }
 
     const color = randomAnswers.map((answer) => {
@@ -106,16 +101,12 @@ class Question extends Component {
 
     const QUESTION_QUANTITY = questions.length;
     if (numberLoop < QUESTION_QUANTITY - 1) {
-      this.setState(
-        {
-          numberLoop: numberLoop + 1,
-          classCategory,
-        },
-      );
+      this.setState({ numberLoop: numberLoop + 1, classCategory });
       dispatch(arrIsShuffle(false, []));
       dispatch(countdownActionCreator(false));
     } else {
       this.setState({ numberLoop: 0 });
+      this.saveGameinfoInStorage();
       push('/feedback');
     }
   }
@@ -160,7 +151,7 @@ class Question extends Component {
 const mapStateToProps = (state) => ({
   randomAnswers: state.card.randomAnswers,
   isVisible: state.timer.isVisible,
-  time: state.timer.seconds,
+  player: state.player,
 });
 
 export default connect(mapStateToProps)(withRouter(Question));
@@ -171,6 +162,7 @@ Question.defaultProps = {
     push: () => '',
   },
   isVisible: false,
+  player: {},
 };
 
 Question.propTypes = {
@@ -181,4 +173,5 @@ Question.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
   }),
+  player: PropTypes.objectOf(PropTypes.any),
 };

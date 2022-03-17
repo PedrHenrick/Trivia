@@ -76,6 +76,7 @@ class Login extends Component {
   render() {
     const { name, email, isVisible } = this.state;
     const { history: { push } } = this.props;
+
     return (
       <div className="divLogin">
         <form className="formLogin">

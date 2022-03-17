@@ -1,8 +1,7 @@
 export const COUNTDOWN = 'COUNTDOWN';
 
 const INITIAL_STATE = {
-  isNotVisible: false,
-  id: 0,
+  isVisible: false,
 };
 
 const countdownReducer = (state = INITIAL_STATE, action) => {
