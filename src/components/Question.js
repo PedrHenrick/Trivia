@@ -52,15 +52,18 @@ class Question extends Component {
   }
 
   handleClick = ({ target }) => {
-    const POINTS = 10;
     const { dispatch, randomAnswers, questions } = this.props;
     const { numberLoop, correctAnswers } = this.state;
-    const time = Number(document.getElementById('countdown').innerText);
     const currentQuestion = questions[numberLoop];
-    const level = this.getScoreDifficulty(currentQuestion.difficulty);
 
     if (currentQuestion.correct_answer === target.textContent) {
+      const POINTS = 10;
+      const time = Number(document.getElementById('countdown').innerText);
+
+      const level = this.getScoreDifficulty(currentQuestion.difficulty);
+
       const score = POINTS + (time * level);
+
       this.setState((prevState) => ({ correctAnswers: prevState.correctAnswers + 1 }));
       dispatch(addScoreAction(score));
       dispatch(correctAnswersAction(correctAnswers + 1));
@@ -90,7 +93,7 @@ class Question extends Component {
     });
 
     dispatch(arrIsShuffle(true, color));
-    dispatch(countdownActionCreator(true, 0, time));
+    dispatch(countdownActionCreator(true));
   }
 
   handleNextQuestion = () => {
