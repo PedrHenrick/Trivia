@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import sanitizeHtml from 'sanitize-html';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { arrIsShuffle } from '../redux/Action';
@@ -9,9 +10,11 @@ class Random extends Component {
     const { colorClick, isNotVisible, shuffle, dispatch } = this.props;
     let { randomAnswers } = this.props;
     const VALUE_RANDOM = 0.5;
+    const sanitizedCorrect = sanitizeHtml(correct);
 
     const answers = incorrects.map((answer, index) => {
       const dataTestId = `wrong-answer-${index}`;
+      const sanitizedAnswer = sanitizeHtml(answer);
       return (
         <button
           type="button"
@@ -20,8 +23,9 @@ class Random extends Component {
           id={ dataTestId }
           onClick={ colorClick }
           disabled={ isNotVisible }
+          className="answer-btn"
         >
-          {answer}
+          {sanitizedAnswer}
         </button>
       );
     });
@@ -34,8 +38,10 @@ class Random extends Component {
         id="correct-answer"
         onClick={ colorClick }
         disabled={ isNotVisible }
+        className="answer-btn"
+
       >
-        {correct}
+        {sanitizedCorrect}
       </button>,
     );
 

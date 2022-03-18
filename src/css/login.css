@@ -11,7 +11,7 @@
   align-items: center;
   background-image: linear-gradient(to left top, #1c9b75, #80e5ff);
   border-radius: 50px 1px;
-  box-shadow: 1px 1px 7px 7px #081c15;
+  box-shadow: 1px 1px 7px 7px rgba(0, 0, 0, 0.3);
   color: #081c15;
   display: flex;
   flex-direction: column;
@@ -40,34 +40,27 @@ input:focus {
   outline: none;
 }
 
-.buttonPlay:disabled {
-  background-color: #7c7c7c;
+.btn__login {
   border: none;
   border-radius: 7px;
   color: #081c15;
-  cursor: not-allowed;
   font-size: 15px;
   font-weight: 900;
   margin: 5px;
-  max-height: 40px;
-  max-width: 50px;
-  min-height: 40px;
-  min-width: 60px;
+  padding: 10px 18px;
+}
+
+.buttonPlay:disabled {
+  background-color: #7c7c7c;
+  cursor: not-allowed;
 }
 
 .buttonPlay:enabled {
   background-color: #21dd76;
-  border: none;
-  border-radius: 7px;
-  color: #081c15;
-  cursor: pointer;
-  font-size: 15px;
-  font-weight: 900;
-  margin: 5px;
-  max-height: 40px;
-  max-width: 50px;
-  min-height: 40px;
-  min-width: 60px;
+}
+
+.buttonSettings:enabled {
+  background-color: #2980b9;
 }
 
 .logoTriviaLogin {

@@ -5,6 +5,7 @@ import { Switch, Route } from 'react-router-dom';
 import Feedback from './pages/Feedback';
 import Game from './pages/Game';
 import Login from './pages/Login';
+import NotFound from './pages/NotFound';
 import Ranking from './pages/Ranking';
 import Settings from './pages/Settings';
 
@@ -16,6 +17,7 @@ export default function App() {
       <Route path="/game" component={ Game } />
       <Route path="/settings" component={ Settings } />
       <Route path="/ranking" component={ Ranking } />
+      <Route path="*" component={ NotFound } />
     </Switch>
   );
 }

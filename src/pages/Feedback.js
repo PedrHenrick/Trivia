@@ -34,15 +34,21 @@ class Feedback extends Component {
       <div className="feedback-container">
         <Header />
         <div className="feedback_headings">
-          <h2 data-testid="feedback-text">{message}</h2>
-          <h3>
+          <h2
+            className="feedback__msg--heading"
+            data-testid="feedback-text"
+          >
+            {message}
+
+          </h2>
+          <h3 className="feedback__msg--questions">
             Você acertou
             {' '}
             <span data-testid="feedback-total-question">{assertions}</span>
             {' '}
             Questoes
           </h3>
-          <h4>
+          <h4 className="feedback__msg--score">
             Um total de
             {' '}
             <span data-testid="feedback-total-score">{score}</span>
@@ -55,11 +61,14 @@ class Feedback extends Component {
             clicked={ this.handleClickRanking }
             btnName="Ranking"
             dataTestId="btn-ranking"
+            btnClass="btn-ranking"
           />
           <Button
             clicked={ this.handleClickPlayAgain }
             btnName="Play Again"
             dataTestId="btn-play-again"
+            btnClass="btn-play-again"
+
           />
         </div>
       </div>

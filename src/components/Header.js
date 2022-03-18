@@ -34,7 +34,7 @@ class Header extends Component {
             { ' ' }
             <span data-testid="header-score">{score}</span>
           </li>
-          <li><Link to="/">Sair</Link></li>
+          <li><Link className="btn__logout" to="/">Sair</Link></li>
         </ul>
       </header>
     );

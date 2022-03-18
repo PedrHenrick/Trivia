@@ -102,7 +102,7 @@ class Login extends Component {
             src={ logo }
             alt="logo trivia"
           />
-          <label htmlFor="name">
+          <label className="name__label" htmlFor="name">
             Player:
             {' '}
             <input
@@ -114,7 +114,7 @@ class Login extends Component {
               onChange={ this.handleChange }
             />
           </label>
-          <label htmlFor="email">
+          <label className="email__label" htmlFor="email">
             E-mail:
             {' '}
             <input
@@ -131,7 +131,7 @@ class Login extends Component {
               type="button"
               data-testid="btn-play"
               disabled={ isVisible }
-              className="buttonPlay"
+              className="btn__login buttonPlay"
               onClick={ this.handleClick }
             >
               Play
@@ -139,7 +139,7 @@ class Login extends Component {
             <button
               type="button"
               data-testid="btn-settings"
-              className="buttonPlay"
+              className="btn__login buttonSettings"
               onClick={ () => push('/settings') }
             >
               Settings

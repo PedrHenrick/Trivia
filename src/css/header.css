@@ -8,7 +8,8 @@ header {
   background-image: linear-gradient(to left top, #005242, #55efc4);
   box-shadow: 0 0 2rem #081c15;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
+  padding: 10px 30px;
 }
 
 h2 {
@@ -36,4 +37,23 @@ li {
 .logoTrivia {
   height: 60px;
   width: 150px;
+}
+
+.btn__logout {
+  border-radius: 200px;
+  color: rgb(248, 234, 234);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  padding: 5px 12px;
+  text-decoration: none;
+  transition: all 0.4s;
+}
+
+.btn__logout:link, .btn__logout:visited {
+  background-color: #c0392b;
+}
+
+.btn__logout:hover, .btn__logout:active {
+  background-color: #d35400;
 }

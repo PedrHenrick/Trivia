@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import sanitizeHtml from 'sanitize-html';
 
 import PropTypes from 'prop-types';
 import Button from './Forms/Button';
@@ -120,6 +121,7 @@ class Question extends Component {
   render() {
     const { numberLoop, classCategory } = this.state;
     const { questions, isVisible } = this.props;
+    const sanitizedQuestion = sanitizeHtml(questions[numberLoop].question);
     return (
       <section className="question-container">
         <p
@@ -128,7 +130,7 @@ class Question extends Component {
         >
           {questions[numberLoop].category}
         </p>
-        <p data-testid="question-text">{questions[numberLoop].question}</p>
+        <p data-testid="question-text">{sanitizedQuestion}</p>
         <Random
           question={ questions[numberLoop] }
           colorClick={ this.handleClick }
@@ -141,7 +143,7 @@ class Question extends Component {
                 clicked={ this.handleNextQuestion }
                 dataTestId="btn-next"
                 btnName="Next"
-                className="buttonNext"
+                btnClass="buttonNext"
               />
             </div>)
           : (
